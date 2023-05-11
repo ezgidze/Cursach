@@ -95,6 +95,7 @@ public:
             }
 
             studentList.addStudent(student);
+            getline(fin, line);
         }
 
         fin.close();
@@ -133,6 +134,7 @@ public:
                     outfile << student.getExamResult(j, k) << endl;
                 }
             }
+            outfile << endl;
         }
         outfile.close();
     }
