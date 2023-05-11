@@ -104,14 +104,14 @@ void addExams(Student& student) {
 
     string examResult;
     do {
-        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет): ";
+        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Не явился): ";
         cin >> examResult;
         if (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-            examResult != "Зачет" && examResult != "Незачет") {
+            examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился") {
             cout << "Некорректный результат экзамена. Попробуйте еще раз." << endl;
         }
     } while (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-        examResult != "Зачет" && examResult != "Незачет");
+        examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился");
 
     student.setSessionName(sessionIndex - 1, examsCount, examName);
     student.setSessionResult(sessionIndex - 1, examsCount, examResult);
@@ -167,14 +167,14 @@ void editExams(Student& student) {
         }
     } while (!(Alpha(examName)));
     do {
-        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет): ";
+        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Не явился): ";
         cin >> examResult;
         if (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-            examResult != "Зачет" && examResult != "Незачет") {
+            examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился") {
             cout << "Некорректный результат экзамена. Попробуйте еще раз." << endl;
         }
     } while (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-        examResult != "Зачет" && examResult != "Незачет");
+        examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился");
     student.setSessionName(sessionIndex, examIndex, examName);
     student.setSessionResult(sessionIndex, examIndex, examResult);
 }
@@ -650,14 +650,14 @@ void addStudent(StudentList& studentList) {
 
             string examResult;
             do {
-                cout << "Введите результат экзамена " << i + 1 << " (2, 3, 4, 5, Зачет, Незачет): ";
+                cout << "Введите результат экзамена " << i + 1 << " (2, 3, 4, 5, Зачет, Незачет, Неявка): ";
                 cin >> examResult;
                 if (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-                    examResult != "Зачет" && examResult != "Незачет") {
+                    examResult != "Зачет" && examResult != "Незачет" && examResult != "Неявка") {
                     cout << "Некорректный результат экзамена. Попробуйте еще раз." << endl;
                 }
             } while (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-                examResult != "Зачет" && examResult != "Незачет");
+                examResult != "Зачет" && examResult != "Незачет" && examResult != "Неявка");
             // Установка результатов экзаменов для текущей сессии
             student.setSessionName(sessionsCount, i, examName);
             student.setSessionResult(sessionsCount, i, examResult);
