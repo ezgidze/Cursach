@@ -84,8 +84,11 @@ bool Alpha(string str) {
 // Проверка на ввод только цифр
 bool Digital(string str) {
     bool contains_only_letters = true;
+    if (str.length() > 1 && str[0] == '0') {
+        contains_only_letters = false;
+    }
     for (char c : str) {
-        if (!(static_cast<int>(c) >= '0' && static_cast<int>(c) <= '9')) {
+        if (!(static_cast<int>(c) >= '0' && static_cast<int>(c) <= '9') && contains_only_letters == true) {
             contains_only_letters = false;
             break;
         }

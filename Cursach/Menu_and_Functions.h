@@ -7,14 +7,27 @@ using namespace std;
 // Функция для отображения меню и получения выбора пользователя
 int getMenuChoice() {
     int choice;
+    string strChoice;
     cout << "Выберите действие:" << endl;
     cout << "0) Выход из программы" << endl;
     cout << "1) Отобразить данные о студентах" << endl;
     cout << "2) Изменить данные о студентах" << endl;
     cout << "3) Добавить данные о студенте" << endl;
     cout << "4) Удалить студента" << endl;
-    cout << "5) Выполнить задание" << endl;
-    cin >> choice;
+    cout << "5) Выполнить задание" << endl << endl;
+    do {
+        do {
+            cout << "Введите значение: ";
+            cin >> strChoice;
+            if (!Digital(strChoice)) {
+                cout << "Ошибка! Введено недопустимое значение. Попробуйте снова." << endl;
+            }
+        } while (!(Digital(strChoice)));
+        choice = stoi(strChoice);
+        if (choice > 5 || choice < 0) {
+            cout << "Ошибка! Значение не входит в диапозон. Ппробуйте снова." << endl;
+        }
+    } while (choice > 5 || choice < 0);
     return choice;
 }
 
@@ -40,7 +53,7 @@ void displayStudents(StudentList& studentList) {
             int examsCount = student.getExamsInCount(j);
             for (int k = 0; k < examsCount; k++) {
                 cout << student.getExamName(j, k) << ": ";
-                cout << student.getExamResult(j, k) << " ";
+                cout << student.getExamResult(j, k) << "; ";
             }
             cout << endl;
         }
@@ -52,14 +65,22 @@ void displayStudents(StudentList& studentList) {
 
 // Функция добавления экзаменов
 void addExams(Student& student) {
-    int sessionIndex;
+    int sessionIndex; string strSessionIndex;
     int sessionCount = student.getSessionsCount();
-    cout << "Выберите сессию для добавления экзамена (1-" << student.getSessionsCount() + 1 << "): ";
-    cin >> sessionIndex;
-    if (sessionIndex < 1 || sessionIndex > student.getSessionsCount() + 1) {
-        cout << "Некорректный номер сессии." << endl;
-        return;
-    }
+    do {
+        do {
+            cout << "Выберите сессию для добавления экзамена (1-" << student.getSessionsCount() + 1 << "): ";
+            cin >> strSessionIndex;
+            if (!Digital(strSessionIndex)) {
+                cout << "Ошибка! Введено недопустимое значение. Попробуйте снова. " << endl;
+            }
+        } while (!Digital(strSessionIndex));
+        sessionIndex = stoi(strSessionIndex);
+
+        if (sessionIndex < 1 || sessionIndex > student.getSessionsCount() + 1) {
+            cout << "Ошибка! Некорректный номер сессии. Попробуйте снова. " << endl;
+        }
+    } while (sessionIndex < 1 || sessionIndex > student.getSessionsCount() + 1);
 
     int examsCount = student.getExamsInCount(sessionIndex - 1);
     if (examsCount >= 10) {
@@ -111,11 +132,18 @@ void editExams(Student& student) {
             }
         } while ((!Digital(strSessionIndex)));
         sessionIndex = stoi(strSessionIndex);
-        if (sessionIndex > student.getSessionsCount()) {
-            cout << "Введен недоступный номер сессии. Попробуйте ещё раз. " << endl;
+        if (sessionIndex > student.getSessionsCount() || sessionIndex < 1) {
+            cout << "Ошибка! Значение не входит в диапозон. Попробуйте ещё раз. " << endl;
         }
-    } while (sessionIndex > student.getSessionsCount());
+    } while (sessionIndex > student.getSessionsCount() || sessionIndex < 1);
     sessionIndex--;
+
+    cout << "Список экзаменов в выбранной сессии:" << endl;
+    for (int i = 0; i < student.getExamsInCount(sessionIndex); i++) {
+        cout << i + 1 << ") " << student.getExamName(sessionIndex, i) << ": "
+            << student.getExamResult(sessionIndex, i) << endl;
+    }
+
     do {
         do {
             cout << "Введите номер экзамена (1-" << student.getExamsInCount(sessionIndex) << "): ";
@@ -125,10 +153,10 @@ void editExams(Student& student) {
             }
         } while ((!Digital(strExamIndex)));
         examIndex = stoi(strExamIndex);
-        if (examIndex > student.getExamsInCount(sessionIndex)) {
+        if (examIndex > student.getExamsInCount(sessionIndex) || examIndex < 1) {
             cout << "Введен недоступный номер экзамена. Попробуйте ещё раз. " << endl;
         }
-    } while (examIndex > student.getExamsInCount(sessionIndex));
+    } while (examIndex > student.getExamsInCount(sessionIndex) || examIndex < 1);
     examIndex--;
     string examName, examResult;
     do {
@@ -151,11 +179,101 @@ void editExams(Student& student) {
     student.setSessionResult(sessionIndex, examIndex, examResult);
 }
 
+// Функция удаления экзамена
+void deleteExams(Student& student) {
+    int sessionsCount = student.getSessionsCount();
+    if (sessionsCount == 0) {
+        cout << "Нет доступных сессий для удаления экзаменов." << endl;
+        return;
+    }
+
+    int sessionIndex; string strSessionIndex;
+    do {
+        do {
+            cout << "Выберите номер сессии, из которой хотите удалить экзамен(1-" << student.getSessionsCount() << "): ";
+            cin >> strSessionIndex;
+            if (!Digital(strSessionIndex)) {
+                cout << "Ошибка! Введено недопустимое значение. Попробуйте снова. " << endl;
+            }
+        } while (!Digital(strSessionIndex));
+        sessionIndex = stoi(strSessionIndex);
+        if (sessionIndex < 1 || sessionIndex > sessionsCount) {
+            cout << "Некорректный номер сессии." << endl;
+        }
+    } while (sessionIndex < 1 || sessionIndex > sessionsCount);
+
+    int examsCount = student.getExamsInCount(sessionIndex - 1);
+    if (examsCount == 0) {
+        cout << "В выбранной сессии нет экзаменов для удаления." << endl;
+    }
+
+    // Проверка, если сессия находится перед или между другими сессиями
+    bool check = true;
+    if (sessionIndex < student.getSessionsCount() && student.getExamsInCount(sessionIndex - 1) == 1) {
+        cout << "В выбранной сессии находится только один экзамен и она находится перед или между другими сессиями. "
+            "Удаление экзамена невозможно." << endl;
+        system("pause");
+        check = false;
+    }
+
+    if (check == true) {
+        cout << "Список экзаменов в выбранной сессии:" << endl;
+        for (int i = 0; i < examsCount; i++) {
+            cout << i + 1 << ") " << student.getExamName(sessionIndex - 1, i) << ": "
+                << student.getExamResult(sessionIndex - 1, i) << endl;
+        }
+
+
+
+        int examIndex; string strExamIndex;
+        do {
+            do {
+                cout << "Выберите номер экзамена, который хотите удалить: ";
+                cin >> strExamIndex;
+                if (!Digital(strExamIndex)) {
+                    cout << "Ошибка! Введено недопустимое значение. Попробуйте снова. " << endl;
+                }
+            } while (!Digital(strExamIndex));
+            examIndex = stoi(strExamIndex);
+            if (examIndex < 1 || examIndex > examsCount) {
+                cout << "Некорректный номер экзамена." << endl;
+            }
+        } while (examIndex < 1 || examIndex > examsCount);
+
+        // Сдвиг экзаменов влево
+        for (int i = examIndex - 1; i < examsCount - 1; i++) {
+            student.setSessionName(sessionIndex - 1, i, student.getExamName(sessionIndex - 1, i + 1));
+            student.setSessionResult(sessionIndex - 1, i, student.getExamResult(sessionIndex - 1, i + 1));
+        }
+
+        // Очистка последнего экзамена
+        student.setSessionName(sessionIndex - 1, examsCount - 1, "");
+        student.setSessionResult(sessionIndex - 1, examsCount - 1, "");
+
+        if (student.getExamsInCount(sessionIndex - 1) == 0) {
+            // Удаление всей сессии
+            student.setSessionsCount(student.getSessionsCount() - 1);
+        }
+
+    }
+}
+
 // Функция для изменения данных о студенте
 void editStudent(StudentList& studentList) {
-    int index;
-    cout << "Введите номер студента для редактирования: ";
-    cin >> index;
+    int index; string strIndex;
+    do {
+        do {
+            cout << "Введите номер студента для редактирования (1 - " << studentList.getSize() << "): ";
+            cin >> strIndex;
+            if (!Digital(strIndex)) {
+                cout << "Ошибка! Введено недопустимый символ. Попробуйте снова. " << endl;
+            }
+        } while (!Digital(strIndex));
+        index = stoi(strIndex);
+        if (index < 1 || index > studentList.getSize()) {
+            cout << "Ошибка! Введенное значение не попадает в диапозон. Попробуйте снова." << endl;
+        }
+    } while (index < 1 || index > studentList.getSize());
     system("cls");
     Student student = studentList.getStudent(index - 1);
     cout << "Выбран студент #" << index << ":" << endl;
@@ -183,15 +301,22 @@ void editStudent(StudentList& studentList) {
         cout << endl;
     }
     cout << endl;
-    int choice;
+    int choice; string strChoice;
     do {
-        cout << "Введите номер значения, которое вы хотите изменить, или нажмите 0, чтобы ничего не изменять:  ";
-        cin >> choice;
-        system("cls");
+        do {
+            cout << "Введите номер значения, которое вы хотите изменить, или нажмите 0, чтобы ничего не изменять:  ";
+            cin >> strChoice;
+            if (!Digital(strChoice))  {
+                cout << "Ошибка! Введено неверное значение. Попробуйте снова. " << endl;
+            }
+        } while (!Digital(strChoice));
+        choice = stoi(strChoice);
         switch (choice) {
         case 0:
+            system("cls");
             break;
         case 1: {
+            system("cls");
             string newSurname;
             do {
                 cout << "Введите новую фамилию: ";
@@ -205,6 +330,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 2: {
+            system("cls");
             string newName;
             do {
                 cout << "Введите новое имя: ";
@@ -218,6 +344,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 3: {
+            system("cls");
             string newPatronymic;
             do {
                 cout << "Введите новое отчество: ";
@@ -231,6 +358,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 4: {
+            system("cls");
             char newGender;
             do {
                 cout << "Введите пол (М/Ж): ";
@@ -244,6 +372,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 5: {
+            system("cls");
             string newFaculty;
             do {
                 cout << "Введите новый факультет: ";
@@ -257,6 +386,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 6: {
+            system("cls");
             string newDepartment;
             cout << "Введите новую кафедру: ";
             cin >> newDepartment;
@@ -265,6 +395,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 7: {
+            system("cls");
             string newGroup;
             cout << "Введите новую группу: ";
             cin >> newGroup;
@@ -273,6 +404,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 8: {
+            system("cls");
             string newStudentID;
             cout << "Введите новый номер зачетной книжки: ";
             cin >> newStudentID;
@@ -281,6 +413,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 9: {
+            system("cls");
             string strNewBirthDay, strNewBirthMonth, strNewBirthYear;
             int newBirthDay, newBirthMonth, newBirthYear;
             do {
@@ -305,6 +438,7 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 10: {
+            system("cls");
             string strNewAdmissinYear;
             int newAdmissionYear;
             do {
@@ -325,13 +459,21 @@ void editStudent(StudentList& studentList) {
             break;
         }
         case 11: {
-            cout << "Выберите действие:" << endl;
+            system("cls");
             cout << "0) Ничего не изменять" << endl;
             cout << "1) Добавить новые экзамены" << endl;
             cout << "2) Изменить результаты и названия уже добавленных экзаменов" << endl;
-            int choice1;
+            cout << "3) Удалить экзамен" << endl;
+            int choice1; string strChoice1;
             do {
-                cin >> choice1;
+                do {
+                    cout << "Выберите действие (1-3): ";
+                    cin >> strChoice1;
+                    if (!Digital(strChoice1)) {
+                        cout << "Ошибка! Введено недопустимое значение. Попробуйте снова. " << endl;
+                    }
+                } while (!Digital(strChoice1));
+                choice1 = stoi(strChoice1);
                 switch (choice1) {
                 case 0:
                     break;
@@ -345,16 +487,21 @@ void editStudent(StudentList& studentList) {
                     editExams(student);
                     choice1 = 0;
                     break;
-                default:
-                    cout << "Ошибка: неверный выбор" << endl;
+                case 3:
+                    system("cls");
+                    deleteExams(student);
+                    choice1 = 0;
                     break;
-                }
-            } while (choice1 != 0);
+                default:
+                    cout << "Ошибка! Значение не входит в диапозон. Попробуйте снова. " << endl;
+                    break;
+                } 
+                } while (choice1 != 0);
             choice = 0;
             break;
         }
         default:
-            cout << "Ошибка: неверный выбор" << endl;
+            cout << "Ошибка! Значение не входит в диапозон. Попробуйте снова. " << endl;
             break;
         }
     } while (choice != 0);
@@ -547,9 +694,20 @@ void addStudent(StudentList& studentList) {
 
 // Функция для удаления студента
 void removeStudent(StudentList& studentList) {
-    int index;
-    cout << "Введите номер студента для удаления: ";
-    cin >> index;
+    int index; string strIndex;
+    do {
+        do {
+            cout << "Введите номер студента для удаления (1 - " << studentList.getSize() << "): ";
+            cin >> strIndex;
+            if (!(Digital(strIndex))) {
+                cout << "Ошибка! Введен недопустимый символ. Попробуйте снова." << endl;
+            }
+        } while (!(Digital(strIndex)));
+        index = stoi(strIndex);
+        if (index < 1 || index > studentList.getSize()) {
+            cout << "Ошибка! Число не входит в диапозон. Попробуйте снова." << endl;
+        }
+    } while (index < 1 || index > studentList.getSize());
     system("cls");
     studentList.removeStudent(index - 1);
     cout << "Студент #" << index << " удален" << endl;

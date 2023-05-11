@@ -35,7 +35,8 @@ int main() {
             performTask(studentList);
             break;
         default:
-            cout << "Ошибка: неверный выбор" << endl;
+            system("pause");
+            system("cls");
             break;
         }
     } while (choice != 0);
