@@ -50,6 +50,7 @@ void displayStudents(StudentList& studentList) {
     system("cls");
 }
 
+// Функция добавления экзаменов
 void addExams(Student& student) {
     int sessionIndex;
     int sessionCount = student.getSessionsCount();
@@ -97,7 +98,7 @@ void addExams(Student& student) {
     cout << "Экзамен успешно добавлен." << endl;
 }
 
-
+// Функция изменения экзаменов
 void editExams(Student& student) {
     int sessionIndex, examIndex;
     string strSessionIndex, strExamIndex;
