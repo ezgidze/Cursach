@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassStudentList.h" />
+    <ClInclude Include="Crypto.h" />
     <ClInclude Include="DopFunctions.h" />
     <ClInclude Include="Menu_and_Functions.h" />
     <ClInclude Include="Student.h" />

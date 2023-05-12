@@ -6,6 +6,7 @@ using namespace std;
 
 #include "Student.h"
 #include "DopFunctions.h"
+#include "Crypto.h"
 
 // Класс для хранения списка студентов
 class StudentList {
@@ -27,6 +28,7 @@ public:
 
     // Загрузка из файла
     void loadFromFile(string filename, StudentList& studentList) {
+        Decrypt();
         ifstream fin(filename);
         if (!fin.is_open()) {
             cout << "Не удалось открыть файл " << filename << endl;
@@ -137,6 +139,7 @@ public:
             outfile << endl;
         }
         outfile.close();
+        Crypt();
     }
 
     // Добавить студента в список
