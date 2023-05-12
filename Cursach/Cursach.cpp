@@ -21,6 +21,8 @@ int main() {
             break;
         case 1:
             displayStudents(studentList);
+            system("pause");
+            system("cls");
             break;
         case 2:
             editStudent(studentList);
@@ -33,6 +35,8 @@ int main() {
             break;
         case 5:
             performTask(studentList);
+            system("pause");
+            system("cls");
             break;
         default:
             system("pause");

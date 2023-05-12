@@ -142,21 +142,6 @@ public:
         sessionsCount = count;
     }
 
-    int getExamsCount() const {
-        int examsCount = 0;
-        int sessionsCount = getSessionsCount();
-        for (int i = 0; i < sessionsCount; i++) {
-            int examsInSessionCount = 0;
-            for (int j = 0; j < 10; j++) {
-                if (getSessionResult(i, j) != "") {
-                    examsInSessionCount++;
-                }
-            }
-            examsCount += examsInSessionCount;
-        }
-        return examsCount;
-    }
-
     int getExamsInCount(int i) const {
         int examsCount = 0;
         int examsInSessionCount = 0;

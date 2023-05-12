@@ -36,7 +36,7 @@ void displayStudents(StudentList& studentList) {
     int size = studentList.getSize();
     for (int i = 0; i < size; i++) {
         Student student = studentList.getStudent(i);
-        cout << "Студент #" << i + 1 << ":" << endl;
+        cout << "Студент №" << i + 1 << ":" << endl;
         cout << "ФИО: " << student.getSurname() << " " << student.getName() << " " << student.getPatronymic() << endl;
         cout << "Пол: " << (student.getGender() == 'М' ? "Мужской" : "Женский") << endl;
         cout << "Факультет: " << student.getFaculty() << endl;
@@ -49,7 +49,7 @@ void displayStudents(StudentList& studentList) {
         cout << "Год проступления: " << student.getAdmissionYear() << endl;
         int sessionsCount = student.getSessionsCount();
         for (int j = 0; j < sessionsCount; j++) {
-            cout << "Сессия #" << j + 1 << ":" << endl;
+            cout << "Сессия №" << j + 1 << ":" << endl;
             int examsCount = student.getExamsInCount(j);
             for (int k = 0; k < examsCount; k++) {
                 cout << student.getExamName(j, k) << ": ";
@@ -59,8 +59,6 @@ void displayStudents(StudentList& studentList) {
         }
         cout << endl;
     }
-    system("pause");
-    system("cls");
 }
 
 // Функция добавления экзаменов
@@ -104,14 +102,14 @@ void addExams(Student& student) {
 
     string examResult;
     do {
-        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Не явился): ";
+        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Неявка): ";
         cin >> examResult;
         if (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-            examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился") {
+            examResult != "Зачет" && examResult != "Незачет" && examResult != "Неявка") {
             cout << "Некорректный результат экзамена. Попробуйте еще раз." << endl;
         }
     } while (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-        examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился");
+        examResult != "Зачет" && examResult != "Незачет" && examResult != "Неявка");
 
     student.setSessionName(sessionIndex - 1, examsCount, examName);
     student.setSessionResult(sessionIndex - 1, examsCount, examResult);
@@ -167,14 +165,14 @@ void editExams(Student& student) {
         }
     } while (!(Alpha(examName)));
     do {
-        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Не явился): ";
+        cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Неявка): ";
         cin >> examResult;
         if (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-            examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился") {
+            examResult != "Зачет" && examResult != "Незачет" && examResult != "Неявка") {
             cout << "Некорректный результат экзамена. Попробуйте еще раз." << endl;
         }
     } while (examResult != "2" && examResult != "3" && examResult != "4" && examResult != "5" &&
-        examResult != "Зачет" && examResult != "Незачет" && examResult != "Не явился");
+        examResult != "Зачет" && examResult != "Незачет" && examResult != "Неявка");
     student.setSessionName(sessionIndex, examIndex, examName);
     student.setSessionResult(sessionIndex, examIndex, examResult);
 }
@@ -276,7 +274,7 @@ void editStudent(StudentList& studentList) {
     } while (index < 1 || index > studentList.getSize());
     system("cls");
     Student student = studentList.getStudent(index - 1);
-    cout << "Выбран студент #" << index << ":" << endl;
+    cout << "Выбран студент №" << index << ":" << endl;
     cout << "1) Фамилия: " << student.getSurname() << endl;
     cout << "2) Имя: " << student.getName() << endl;
     cout << "3) Отчество: " << student.getPatronymic() << endl;
@@ -292,7 +290,7 @@ void editStudent(StudentList& studentList) {
     cout << "11) Результаты и названия экзаменов: " << endl;
     int sessionsCount = student.getSessionsCount();
     for (int j = 0; j < sessionsCount; j++) {
-        cout << "Сессия #" << j + 1 << ":" << endl;
+        cout << "Сессия №" << j + 1 << ":" << endl;
         int examsCount = student.getExamsInCount(j);
         for (int k = 0; k < examsCount; k++) {
             cout << student.getExamName(j, k) << ": ";
@@ -507,7 +505,7 @@ void editStudent(StudentList& studentList) {
     } while (choice != 0);
     system("cls");
     studentList.editStudent(index - 1, student);
-    cout << "Данные о студенте #" << index << " изменены" << endl;
+    cout << "Данные о студенте №" << index << " изменены" << endl;
     system("pause");
     system("cls");
 }
@@ -710,13 +708,183 @@ void removeStudent(StudentList& studentList) {
     } while (index < 1 || index > studentList.getSize());
     system("cls");
     studentList.removeStudent(index - 1);
-    cout << "Студент #" << index << " удален" << endl;
+    cout << "Студент №" << index << " удален" << endl;
     system("pause");
     system("cls");
 }
 
+// Вспомогательная функция для преобразования оценки в балл
+float mapExamResultToScore(const string& examResult) {
+    if (examResult == "5") {
+        return 5.0;
+    }
+    else if (examResult == "4") {
+        return 4.0;
+    }
+    else if (examResult == "3") {
+        return 3.0;
+    }
+    else if (examResult == "2") {
+        return 2.0;
+    }
+    else {
+        return 0.0;
+    }
+}
+
+// Вспомогательная функция для вычисления среднего балла студента
+float calculateAverage(const Student& student) {
+    int totalExams = 0;
+    float totalScore = 0.0;
+
+    int sessionsCount = student.getSessionsCount();
+    for (int j = 0; j < sessionsCount; j++) {
+        int examsCount = student.getExamsInCount(j);
+        for (int k = 0; k < examsCount; k++) {
+            string examResult = student.getExamResult(j, k);
+            if (examResult != "Незачет" && examResult != "Зачет" && examResult != "Неявка") {
+                totalExams++;
+                float score = mapExamResultToScore(examResult);
+                totalScore += score;
+            }
+        }
+    }
+
+    if (totalExams > 0) {
+        return totalScore / totalExams;
+    }
+    else {
+        return 0.0;
+    }
+}
+
 // Функция для выполнения задания
 void performTask(StudentList& studentList) {
-    cout << "Выполняется задание..." << endl;
-    // здесь можно написать свой код для выполнения задания
+    // Создаем вспомогательный список, в котором будем хранить студентов с требуемым условием
+    StudentList filteredListPart1;
+    StudentList filteredListPart2;
+
+    // Проходим по всем студентам в исходном списке
+    int size = studentList.getSize();
+    for (int i = 0; i < size; i++) {
+        Student student = studentList.getStudent(i);
+
+        int totalExams = 0;
+        int excellentExams = 0;
+        int goodExams = 0;
+
+        int sessionsCount = student.getSessionsCount();
+        for (int j = 0; j < sessionsCount; j++) {
+            int examsCount = student.getExamsInCount(j);
+            for (int k = 0; k < examsCount; k++) {
+                string examResult = student.getExamResult(j, k);
+                if (examResult != "Незачет" && examResult != "Зачет" && examResult != "Неявка") {
+                    totalExams++;
+                    if (examResult == "5") {
+                        excellentExams++;
+                    }
+                    else if (examResult == "4") {
+                        goodExams++;
+                    }
+                }
+            }
+        }
+
+        // Вычисляем процент хороших и отличных оценок
+        int excellentPercentage = excellentExams * 100 / totalExams;
+        int goodPercentage = goodExams * 100 / totalExams;
+        int totalPercentage = excellentPercentage + goodPercentage;
+
+        // Если процент хороших и отличных оценок >= 50%, добавляем студента во вспомогательный список
+        if (totalPercentage >= 50) {
+            filteredListPart1.addStudent(student);
+        }
+        else {
+            filteredListPart2.addStudent(student);
+        }
+    }
+
+    // Сортируем студентов с хорошими оценками по вспомогательном списке по убыванию среднего балла
+    int filteredSize1 = filteredListPart1.getSize();
+    for (int i = 0; i < filteredSize1 - 1; i++) {
+        for (int j = 0; j < filteredSize1 - i - 1; j++) {
+            Student student1 = filteredListPart1.getStudent(j);
+            Student student2 = filteredListPart1.getStudent(j + 1);
+
+            // Вычисляем средний балл для каждого студента
+            float average1 = calculateAverage(student1);
+            float average2 = calculateAverage(student2);
+
+            // Если средний балл первого студента меньше, меняем их местами
+            if (average1 < average2) {
+                filteredListPart1.editStudent(j, student2);
+                filteredListPart1.editStudent(j + 1, student1);
+            }
+        }
+    }
+
+    // Сортируем студентов с плохими оценками по вспомогательном списке по убыванию среднего балла
+    int filteredSize2 = filteredListPart2.getSize();
+    for (int i = 0; i < filteredSize2 - 1; i++) {
+        for (int j = 0; j < filteredSize2 - i - 1; j++) {
+            Student student1 = filteredListPart2.getStudent(j);
+            Student student2 = filteredListPart2.getStudent(j + 1);
+
+            // Вычисляем средний балл для каждого студента
+            float average1 = calculateAverage(student1);
+            float average2 = calculateAverage(student2);
+
+            // Если средний балл первого студента меньше, меняем их местами
+            if (average1 < average2) {
+                filteredListPart2.editStudent(j, student2);
+                filteredListPart2.editStudent(j + 1, student1);
+            }
+        }
+    }
+
+    // Выводим результат хороших студентов
+    cout << "Студенты с 50% и более хорошими и отличными оценками, отсортированные по убыванию среднего балла:\n";
+    //displayStudents(filteredListPart1);
+    cout << "\t2 наиболее успевающих:\n";
+    for (int i = 0; i < 2; i++) {
+        Student student = filteredListPart1.getStudent(i);
+        cout << "\t\tСтудент " << i + 1 << ":\n";
+        cout << "\t\tФамилия: " << student.getSurname() << endl;
+        cout << "\t\tИмя: " << student.getName() << endl;
+        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << endl;
+    }
+
+    cout << "\t2 наиболее неуспевающих:\n";
+    for (int i = filteredSize1 - 2; i < filteredSize1; i++) {
+        Student student = filteredListPart1.getStudent(i);
+        cout << "\t\tСтудент " << i + 1 << ":\n";
+        cout << "\t\tФамилия: " << student.getSurname() << endl;
+        cout << "\t\tИмя: " << student.getName() << endl;
+        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << endl;
+    }
+
+    // Выводим результат плохих студентов
+    cout << "Остальные студенты, отсортированные по убыванию среднего балла:\n";
+    //displayStudents(filteredListPart2);
+    cout << "\t2 наиболее успевающих:\n";
+    for (int i = 0; i < 2; i++) {
+        Student student = filteredListPart2.getStudent(i);
+        cout << "\t\tСтудент " << i + 1 << ":\n";
+        cout << "\t\tФамилия: " << student.getSurname() << endl;
+        cout << "\t\tИмя: " << student.getName() << endl;
+        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << endl;
+    }
+
+    cout << "\t2 наиболее неуспевающих:\n";
+    for (int i = filteredSize2 - 2; i < filteredSize2; i++) {
+        Student student = filteredListPart2.getStudent(i);
+        cout << "\t\tСтудент " << i + 1 << ":\n";
+        cout << "\t\tФамилия: " << student.getSurname() << endl;
+        cout << "\t\tИмя: " << student.getName() << endl;
+        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << endl;
+    }
 }
