@@ -758,8 +758,45 @@ float calculateAverage(const Student& student) {
     }
 }
 
+// Функция вывода студентов для задания
+void displayStudentsTask(StudentList& studentList, int number, int size1, int size2) {
+    for (int i = size1; i < size2; i++) {
+        Student student = studentList.getStudent(i);
+        cout << "\t\tСтудент №" << number << ":" << endl; number += 1;
+        cout << "\t\tФИО: " << student.getSurname() << " " << student.getName() << " " << student.getPatronymic() << endl;
+        cout << "\t\tПол: " << (student.getGender() == 'М' ? "Мужской" : "Женский") << endl;
+        cout << "\t\tФакультет: " << student.getFaculty() << endl;
+        cout << "\t\tКафедра: " << student.getDepartment() << endl;
+        cout << "\t\tГруппа: " << student.getGroup() << endl;
+        cout << "\t\tЗачетная книжка: " << student.getStudentID() << endl;
+        cout << "\t\tДата рождения: ";
+        printDate(student.getBirthDay(), student.getBirthMonth(), student.getBirthYear());
+        cout << endl;
+        cout << "\t\tГод проступления: " << student.getAdmissionYear() << endl;
+        int sessionsCount = student.getSessionsCount();
+        for (int j = 0; j < sessionsCount; j++) {
+            cout << "\t\tСессия №" << j + 1 << ":" << endl << "\t\t";
+            int examsCount = student.getExamsInCount(j);
+            for (int k = 0; k < examsCount; k++) {
+                cout << student.getExamName(j, k) << ": ";
+                cout << student.getExamResult(j, k) << "; ";
+            }
+            cout << endl;
+        }
+        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << endl;
+    }
+}
+
 // Функция для выполнения задания
 void performTask(StudentList& studentList) {
+
+    // Проверяем, если первый список студентов пуст
+    if (studentList.getSize() == 0) {
+        cout << "Всписке нет студентов." << endl;
+        return;
+    }
+
     // Создаем вспомогательный список, в котором будем хранить студентов с требуемым условием
     StudentList filteredListPart1;
     StudentList filteredListPart2;
@@ -844,47 +881,79 @@ void performTask(StudentList& studentList) {
 
     // Выводим результат хороших студентов
     cout << "Студенты с 50% и более хорошими и отличными оценками, отсортированные по убыванию среднего балла:\n";
-    //displayStudents(filteredListPart1);
-    cout << "\t2 наиболее успевающих:\n";
-    for (int i = 0; i < 2; i++) {
-        Student student = filteredListPart1.getStudent(i);
-        cout << "\t\tСтудент " << i + 1 << ":\n";
-        cout << "\t\tФамилия: " << student.getSurname() << endl;
-        cout << "\t\tИмя: " << student.getName() << endl;
-        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+    if (filteredListPart1.getSize() <= 0) {
+        cout << "В списке нет студетов" << endl;
         cout << endl;
     }
+    else if (filteredListPart1.getSize() <= 2) {
+        cout << "\t1 или 2 наиболее успевающих (т.к. 1 или 2 студента):\n";
+        int number = 1;
+        int size = filteredListPart1.getSize();
+        displayStudentsTask(filteredListPart1, number, 0, size);
 
-    cout << "\t2 наиболее неуспевающих:\n";
-    for (int i = filteredSize1 - 2; i < filteredSize1; i++) {
-        Student student = filteredListPart1.getStudent(i);
-        cout << "\t\tСтудент " << i + 1 << ":\n";
-        cout << "\t\tФамилия: " << student.getSurname() << endl;
-        cout << "\t\tИмя: " << student.getName() << endl;
-        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << "\tнаиболее неуспевающих:\n";
+        cout << "\t\tТаких нет" << endl;
         cout << endl;
+        
+    } else if (filteredListPart1.getSize() == 3) {
+        cout << "\t2 наиболее успевающих:\n";
+        int number = 1;
+        int size = filteredListPart1.getSize();
+        displayStudentsTask(filteredListPart1, number, 0, 2);
+
+        cout << "\t1 наиболее неуспевающий (т.к. всего 3 студента):\n";
+        number = 1;
+        displayStudentsTask(filteredListPart1, number, filteredSize1 - 1, 3);
+    }
+    else {
+        cout << "\t2 наиболее успевающих:\n";
+        int number = 1;
+        int size = filteredListPart1.getSize();
+        displayStudentsTask(filteredListPart1, number, 0, 2);
+
+        cout << "\t2 наиболее неуспевающих:\n";
+        number = 1;
+        displayStudentsTask(filteredListPart1, number, filteredSize1 - 2, filteredSize1);
+        
     }
 
     // Выводим результат плохих студентов
     cout << "Остальные студенты, отсортированные по убыванию среднего балла:\n";
-    //displayStudents(filteredListPart2);
-    cout << "\t2 наиболее успевающих:\n";
-    for (int i = 0; i < 2; i++) {
-        Student student = filteredListPart2.getStudent(i);
-        cout << "\t\tСтудент " << i + 1 << ":\n";
-        cout << "\t\tФамилия: " << student.getSurname() << endl;
-        cout << "\t\tИмя: " << student.getName() << endl;
-        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+    // Проверяем, если второй вспомогательный список студентов пуст
+    if (filteredListPart2.getSize() <= 0) {
+        cout << "В списке нет студетов" << endl;
         cout << endl;
     }
+    else if (filteredListPart2.getSize() <= 2) {
+        cout << "\t1 или 2 наиболее успевающих (т.к. 1 или 2 студента):\n";
+        int number = 1;
+        int size = filteredListPart2.getSize();
+        displayStudentsTask(filteredListPart2, number, 0, size);
 
-    cout << "\t2 наиболее неуспевающих:\n";
-    for (int i = filteredSize2 - 2; i < filteredSize2; i++) {
-        Student student = filteredListPart2.getStudent(i);
-        cout << "\t\tСтудент " << i + 1 << ":\n";
-        cout << "\t\tФамилия: " << student.getSurname() << endl;
-        cout << "\t\tИмя: " << student.getName() << endl;
-        cout << "\t\tСредний балл: " << calculateAverage(student) << endl;
+        cout << "\tнаиболее неуспевающих:\n";
+        cout << "\t\tТаких нет" << endl;
         cout << endl;
+
+    }
+    else if (filteredListPart2.getSize() == 3) {
+        cout << "\t2 наиболее успевающих:\n";
+        int number = 1;
+        int size = filteredListPart2.getSize();
+        displayStudentsTask(filteredListPart2, number, 0, 2);
+
+        cout << "\t1 наиболее неуспевающий (т.к. всего 3 студента):\n";
+        number = 1;
+        displayStudentsTask(filteredListPart2, number, filteredSize2 - 1, 3);
+    }
+    else {
+        cout << "\t2 наиболее успевающих:\n";
+        int number = 1;
+        int size = filteredListPart2.getSize();
+        displayStudentsTask(filteredListPart2, number, 0, 2);
+
+        cout << "\t2 наиболее неуспевающих:\n";
+        number = 1;
+        displayStudentsTask(filteredListPart2, number, filteredSize2 - 2, filteredSize2);
+
     }
 }
