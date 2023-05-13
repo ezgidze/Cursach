@@ -801,10 +801,49 @@ void performTask(StudentList& studentList) {
     StudentList filteredListPart1;
     StudentList filteredListPart2;
 
+    // Ввод интервала года рождения
+    int date1, date2;
+    string strDate1, strDate2;
+    do {
+        do {
+            cout << "Введите первую дату интервала (1980 - 2004): ";
+            cin >> strDate1;
+            if (!Digital(strDate1)) {
+                cout << "Ошибка! Введено недопустимое значение. Попробуйте снова. " << endl;
+            }
+        } while (!Digital(strDate1));
+        date1 = stoi(strDate1);
+        if (2004 < date1 || date1 < 1980) {
+            cout << "Ошибка! Значение не входит в интервал. Попробуйте снова. " << endl;
+        }
+    } while (2004 < date1 || date1 < 1980);
+    do {
+        do {
+            cout << "Введите вторую дату интервала (1980 - 2004): ";
+            cin >> strDate2;
+            if (!Digital(strDate2)) {
+                cout << "Ошибка! Введено недопустимое значение. Попробуйте снова. " << endl;
+            }
+        } while (!Digital(strDate2));
+        date2 = stoi(strDate2);
+        if (date2 > 2004 || date2 < 1980) {
+            cout << "Ошибка! Значение не входит в интервал. Попробуйте снова. " << endl;
+            continue;
+        }
+        if (date1 > date2) {
+            cout << "Ошибка! Вторая дата должна быть больше или равна первой. Попробуйте снова. " << endl;
+        }
+    } while ((date2 > 2004 || date2 < 1980) || date1 > date2);
+    cout << "Выбранный интервал: " << date1 << " - " << date2 << endl;
+
     // Проходим по всем студентам в исходном списке
     int size = studentList.getSize();
     for (int i = 0; i < size; i++) {
         Student student = studentList.getStudent(i);
+
+        if (student.getBirthYear() > date2 || student.getBirthYear() < date1) {
+            continue;
+        }
 
         int totalExams = 0;
         int excellentExams = 0;
