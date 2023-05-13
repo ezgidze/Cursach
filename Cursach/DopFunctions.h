@@ -2,6 +2,7 @@
 #include <iostream>
 #include <conio.h>
 using namespace std;
+
 // Функция вывода даты
 void printDate(int day, int month, int year) {
     if (day < 10) {

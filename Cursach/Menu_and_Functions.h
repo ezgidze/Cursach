@@ -39,7 +39,7 @@ void displayStudents(StudentList& studentList) {
         cout << "Студент №" << i + 1 << ":" << endl;
         cout << "ФИО: " << student.getSurname() << " " << student.getName() << " " << student.getPatronymic() << endl;
         cout << "Пол: " << (student.getGender() == 'М' ? "Мужской" : "Женский") << endl;
-        cout << "Факультет: " << student.getFaculty() << endl;
+        cout << "Институт: " << student.getFaculty() << endl;
         cout << "Кафедра: " << student.getDepartment() << endl;
         cout << "Группа: " << student.getGroup() << endl;
         cout << "Зачетная книжка: " << student.getStudentID() << endl;
@@ -279,7 +279,7 @@ void editStudent(StudentList& studentList) {
     cout << "2) Имя: " << student.getName() << endl;
     cout << "3) Отчество: " << student.getPatronymic() << endl;
     cout << "4) Пол: " << (student.getGender() == 'М' ? "Мужской" : "Женский") << endl;
-    cout << "5) Факультет: " << student.getFaculty() << endl;
+    cout << "5) Институт: " << student.getFaculty() << endl;
     cout << "6) Кафедра: " << student.getDepartment() << endl;
     cout << "7) Группа: " << student.getGroup() << endl;
     cout << "8) Зачетная книжка: " << student.getStudentID() << endl;
@@ -373,10 +373,10 @@ void editStudent(StudentList& studentList) {
             system("cls");
             string newFaculty;
             do {
-                cout << "Введите новый факультет: ";
+                cout << "Введите новый институт: ";
                 cin >> newFaculty;
                 if (!Alpha(newFaculty)) {
-                    cout << "Некорректно введен факультет. Попробуйте еще раз." << endl;
+                    cout << "Некорректно введен институт. Попробуйте еще раз." << endl;
                 }
             } while (!Alpha(newFaculty));
             student.setFaculty(newFaculty);
@@ -556,10 +556,10 @@ void addStudent(StudentList& studentList) {
 
     string faculty;
     do {
-        cout << "Введите факультет: ";
+        cout << "Введите институт: ";
         cin >> faculty;
         if (!Alpha(faculty)) {
-            cout << "Некорректно введен факультет. Попробуйте еще раз." << endl;
+            cout << "Некорректно введен институт. Попробуйте еще раз." << endl;
         }
     } while (!Alpha(faculty));
     student.setFaculty(faculty);
@@ -765,7 +765,7 @@ void displayStudentsTask(StudentList& studentList, int number, int size1, int si
         cout << "\t\tСтудент №" << number << ":" << endl; number += 1;
         cout << "\t\tФИО: " << student.getSurname() << " " << student.getName() << " " << student.getPatronymic() << endl;
         cout << "\t\tПол: " << (student.getGender() == 'М' ? "Мужской" : "Женский") << endl;
-        cout << "\t\tФакультет: " << student.getFaculty() << endl;
+        cout << "\t\tИнститут: " << student.getFaculty() << endl;
         cout << "\t\tКафедра: " << student.getDepartment() << endl;
         cout << "\t\tГруппа: " << student.getGroup() << endl;
         cout << "\t\tЗачетная книжка: " << student.getStudentID() << endl;
@@ -847,6 +847,8 @@ void performTask(StudentList& studentList) {
 
         int totalExams = 0;
         int excellentExams = 0;
+        int setisfactionExams = 0;
+        int badExams = 0;
         int goodExams = 0;
 
         int sessionsCount = student.getSessionsCount();
@@ -862,20 +864,32 @@ void performTask(StudentList& studentList) {
                     else if (examResult == "4") {
                         goodExams++;
                     }
+                    else if (examResult == "3") {
+                        setisfactionExams++;
+                    }
+                    else if (examResult == "2") {
+                        badExams++;
+                    }
                 }
             }
         }
 
         // Вычисляем процент хороших и отличных оценок
-        int excellentPercentage = excellentExams * 100 / totalExams;
-        int goodPercentage = goodExams * 100 / totalExams;
+        int excellentPercentage = 0;
+        if (excellentExams > 0) {
+            excellentPercentage = excellentExams * 100 / totalExams;
+        }
+        int goodPercentage = 0;
+        if (goodExams > 0) {
+            goodPercentage = goodExams * 100 / totalExams;
+        }
         int totalPercentage = excellentPercentage + goodPercentage;
 
         // Если процент хороших и отличных оценок >= 50%, добавляем студента во вспомогательный список
         if (totalPercentage >= 50) {
             filteredListPart1.addStudent(student);
         }
-        else {
+        else if (!(setisfactionExams == 0 && badExams == 0)) {
             filteredListPart2.addStudent(student);
         }
     }
