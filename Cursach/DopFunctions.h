@@ -86,7 +86,7 @@ bool Alpha(string str) {
 bool AlphaDop(string str) {
     bool contains_only_letters = true;
     for (char c : str) {
-        if (!((65 <= static_cast<int>(c) && static_cast<int>(c) <= 90) || (97 <= static_cast<int>(c) && static_cast<int>(c) <= 122) || (-200 <= static_cast<int>(c) && static_cast<int>(c) <= -1 || 46 == static_cast<int>(c) || 45 == static_cast<int>(c)))) {
+        if (!((65 <= static_cast<int>(c) && static_cast<int>(c) <= 90) || (97 <= static_cast<int>(c) && static_cast<int>(c) <= 122) || (-200 <= static_cast<int>(c) && static_cast<int>(c) <= -1 || 46 == static_cast<int>(c) || 45 == static_cast<int>(c) || 32 == static_cast<int>(c)))) {
             contains_only_letters = false;
             break;
         }
@@ -124,7 +124,12 @@ bool Digital(string str) {
 // Проверка на ввод только цифр в дате
 bool DigitalDate(string str) {
     bool contains_only_letters = true;
-
+    if ((str.length() > 2 && str[0] == '0' && str[1] == '0')) {
+        contains_only_letters = false;
+    }
+    if (stoi(str) > 9 && str[0] == '0') {
+        contains_only_letters = false;
+    }
     for (char c : str) {
         if (!(static_cast<int>(c) >= '0' && static_cast<int>(c) <= '9') && contains_only_letters == true) {
             contains_only_letters = false;

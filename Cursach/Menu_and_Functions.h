@@ -94,7 +94,8 @@ void addExams(Student& student) {
     string examName;
     do {
         cout << "Введите название экзамена: ";
-        cin >> examName;
+        cin.ignore();
+        getline(cin, examName);
         if (!AlphaDop(examName)) {
             cout << "Некорректное название экзамена. Попробуйте еще раз." << endl;
         }
@@ -159,7 +160,8 @@ void editExams(Student& student) {
     string examName, examResult;
     do {
         cout << "Введите новое название экзамена: ";
-        cin >> examName;
+        cin.ignore();
+        getline(cin, examName);
         if (!(AlphaDop(examName))) {
             cout << "Неверено введено название экзамена. Ппоробуйте ещё раз. " << endl;
         }
@@ -294,7 +296,7 @@ void editStudent(StudentList& studentList) {
         int examsCount = student.getExamsInCount(j);
         for (int k = 0; k < examsCount; k++) {
             cout << student.getExamName(j, k) << ": ";
-            cout << student.getExamResult(j, k) << " ";
+            cout << student.getExamResult(j, k) << "; ";
         }
         cout << endl;
     }
@@ -640,7 +642,8 @@ void addStudent(StudentList& studentList) {
             string examName;
             do {
                 cout << "Введите название экзамена " << i + 1 << ": ";
-                cin >> examName;
+                cin.ignore();
+                getline(cin, examName);
                 if (!AlphaDop(examName)) {
                     cout << "Некорректное название экзамена. Попробуйте еще раз." << endl;
                 }
