@@ -95,10 +95,10 @@ void addExams(Student& student) {
     do {
         cout << "Введите название экзамена: ";
         cin >> examName;
-        if (!Alpha(examName)) {
+        if (!AlphaDop(examName)) {
             cout << "Некорректное название экзамена. Попробуйте еще раз." << endl;
         }
-    } while (!Alpha(examName));
+    } while (!AlphaDop(examName));
 
     string examResult;
     do {
@@ -160,10 +160,10 @@ void editExams(Student& student) {
     do {
         cout << "Введите новое название экзамена: ";
         cin >> examName;
-        if (!(Alpha(examName))) {
+        if (!(AlphaDop(examName))) {
             cout << "Неверено введено название экзамена. Ппоробуйте ещё раз. " << endl;
         }
-    } while (!(Alpha(examName)));
+    } while (!(AlphaDop(examName)));
     do {
         cout << "Введите новый результат экзамена (2, 3, 4, 5, Зачет, Незачет, Неявка): ";
         cin >> examResult;
@@ -416,12 +416,12 @@ void editStudent(StudentList& studentList) {
             int newBirthDay, newBirthMonth, newBirthYear;
             do {
                 do {
-                    cout << "Введите дату рождения (ДД.ММ.ГГГГ): ";
+                    cout << "Введите дату рождения (ДД ММ ГГГГ): ";
                     cin >> strNewBirthDay >> strNewBirthMonth >> strNewBirthYear;
-                    if (!Digital(strNewBirthDay) || !Digital(strNewBirthMonth) || !Digital(strNewBirthYear)) {
+                    if (!DigitalDate(strNewBirthDay) || !DigitalDate(strNewBirthMonth) || !DigitalDate(strNewBirthYear)) {
                         cout << "Некорректная дата. Попробуйте еще раз." << endl;
                     }
-                } while (!Digital(strNewBirthDay) || !Digital(strNewBirthMonth) || !Digital(strNewBirthYear));
+                } while (!DigitalDate(strNewBirthDay) || !DigitalDate(strNewBirthMonth) || !DigitalDate(strNewBirthYear));
                 newBirthDay = stoi(strNewBirthDay);
                 newBirthMonth = stoi(strNewBirthMonth);
                 newBirthYear = stoi(strNewBirthYear);
@@ -583,12 +583,12 @@ void addStudent(StudentList& studentList) {
     int birthDay, birthMonth, birthYear;
     do {
         do {
-            cout << "Введите дату рождения (ДД.ММ.ГГГГ): ";
+            cout << "Введите дату рождения (ДД ММ ГГГГ): ";
             cin >> strBirthDay >> strBirthMonth >> strBirthYear;
-            if (!Digital(strBirthDay) || !Digital(strBirthMonth) || !Digital(strBirthYear)) {
+            if (!DigitalDate(strBirthDay) || !DigitalDate(strBirthMonth) || !DigitalDate(strBirthYear)) {
                 cout << "Некорректная дата. Попробуйте еще раз." << endl;
             }
-        } while (!Digital(strBirthDay) || !Digital(strBirthMonth) || !Digital(strBirthYear));
+        } while (!DigitalDate(strBirthDay) || !DigitalDate(strBirthMonth) || !DigitalDate(strBirthYear));
         birthDay = stoi(strBirthDay);
         birthMonth = stoi(strBirthMonth);
         birthYear = stoi(strBirthYear);
@@ -641,10 +641,10 @@ void addStudent(StudentList& studentList) {
             do {
                 cout << "Введите название экзамена " << i + 1 << ": ";
                 cin >> examName;
-                if (!Alpha(examName)) {
+                if (!AlphaDop(examName)) {
                     cout << "Некорректное название экзамена. Попробуйте еще раз." << endl;
                 }
-            } while (!Alpha(examName));
+            } while (!AlphaDop(examName));
 
             string examResult;
             do {

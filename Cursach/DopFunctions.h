@@ -82,12 +82,49 @@ bool Alpha(string str) {
     }
 }
 
+// Проверка на ввод только букв и доп символов ( - . )
+bool AlphaDop(string str) {
+    bool contains_only_letters = true;
+    for (char c : str) {
+        if (!((65 <= static_cast<int>(c) && static_cast<int>(c) <= 90) || (97 <= static_cast<int>(c) && static_cast<int>(c) <= 122) || (-200 <= static_cast<int>(c) && static_cast<int>(c) <= -1 || 46 == static_cast<int>(c) || 45 == static_cast<int>(c)))) {
+            contains_only_letters = false;
+            break;
+        }
+    }
+
+    if (contains_only_letters) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 // Проверка на ввод только цифр
 bool Digital(string str) {
     bool contains_only_letters = true;
     if (str.length() > 1 && str[0] == '0') {
         contains_only_letters = false;
     }
+    for (char c : str) {
+        if (!(static_cast<int>(c) >= '0' && static_cast<int>(c) <= '9') && contains_only_letters == true) {
+            contains_only_letters = false;
+            break;
+        }
+    }
+
+    if (contains_only_letters) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+// Проверка на ввод только цифр в дате
+bool DigitalDate(string str) {
+    bool contains_only_letters = true;
+
     for (char c : str) {
         if (!(static_cast<int>(c) >= '0' && static_cast<int>(c) <= '9') && contains_only_letters == true) {
             contains_only_letters = false;
